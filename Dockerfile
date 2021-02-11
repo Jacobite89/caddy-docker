@@ -9,10 +9,11 @@ RUN apk add --no-cache \
     tar \
     wget
 
-RUN wget -O /etc/caddy/Caddyfile "https://raw.githubusercontent.com/caddyserver/dist/master/config/Caddyfile" && \
+RUN mkdir -p /etc/caddy /usr/share/caddy && \
+    wget -O /etc/caddy/Caddyfile "https://raw.githubusercontent.com/caddyserver/dist/master/config/Caddyfile" && \
     wget -O /usr/share/caddy/index.html "https://raw.githubusercontent.com/caddyserver/dist/master/welcome/index.html" && \
     wget -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v${version}/caddy_${version}_linux_amd64.tar.gz" && \
-    tar -xzf /tmp/caddy.tar.gz -C /usr/bin/caddy && \
+    tar -xzf /tmp/caddy.tar.gz -C /usr/bin caddy && \
     chmod +x /usr/bin/caddy && \
     caddy version
 
