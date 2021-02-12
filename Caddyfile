@@ -1,5 +1,6 @@
 import /etc/caddy/Caddyfile
 
-http://127.0.0.1/health {
-  respond / 200
+127.0.0.1:2016 {
+  respond /* 503
+  respond /health 200
 }
