@@ -1,0 +1,5 @@
+import /etc/caddy/Caddyfile
+
+http://127.0.0.1/health {
+  respond / 200
+}
