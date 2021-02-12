@@ -23,14 +23,12 @@ FROM alpine:3.13
 
 RUN apk add --no-cache \
     ca-certificates \
-    curl \
     libcap \
     mailcap
 
 COPY --from=builder /tmp/Caddyfile /etc/caddy/
 COPY --from=builder /tmp/index.html /usr/share/caddy/
 COPY --from=builder /usr/bin/caddy /usr/bin/
-COPY Caddyfile /etc/
 
 RUN addgroup -g 82 -S www-data && \
     adduser -u 82 -SD -h /var/lib/caddy/ -g 'Caddy web server' -s /sbin/nologin -G www-data www-data && \
@@ -40,8 +38,6 @@ USER www-data
 RUN mkdir -p /var/lib/caddy/.local/share/caddy
 VOLUME /var/lib/caddy/.local/share/caddy
 
-HEALTHCHECK CMD curl -f http://localhost:2016/health || exit 1
-
 EXPOSE 80 443 2019
 ENTRYPOINT ["caddy", "run"]
-CMD ["--environ", "--config", "/etc/Caddyfile"]
+CMD ["--environ", "--config", "/etc/caddy/Caddyfile"]
