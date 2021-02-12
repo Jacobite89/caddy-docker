@@ -1,5 +1,5 @@
 import /etc/caddy/Caddyfile
 
-http://localhost/health/* {
-  respond 200
+http://localhost:2016 {
+  respond /health 200
 }
