@@ -9,9 +9,8 @@ RUN apk add --no-cache \
     tar \
     wget
 
-RUN mkdir -p /etc/caddy /usr/share/caddy && \
-    wget -nv -O /etc/caddy/Caddyfile "https://raw.githubusercontent.com/caddyserver/dist/master/config/Caddyfile" && \
-    wget -nv -O /usr/share/caddy/index.html "https://raw.githubusercontent.com/caddyserver/dist/master/welcome/index.html" && \
+RUN wget -nv -O /tmp/Caddyfile "https://raw.githubusercontent.com/caddyserver/dist/master/config/Caddyfile" && \
+    wget -nv -O /tmp/index.html "https://raw.githubusercontent.com/caddyserver/dist/master/welcome/index.html" && \
     wget -nv -O /tmp/caddy.tar.gz "https://github.com/caddyserver/caddy/releases/download/v${version}/caddy_${version}_linux_amd64.tar.gz" && \
     tar -xzf /tmp/caddy.tar.gz -C /usr/bin caddy && \
     chmod +x /usr/bin/caddy && \
@@ -24,12 +23,14 @@ FROM alpine:3.13
 
 RUN apk add --no-cache \
     ca-certificates \
+    curl \
     libcap \
     mailcap
 
-COPY --from=builder /etc/caddy/Caddyfile /etc/caddy/
-COPY --from=builder /usr/share/caddy/index.html /usr/share/caddy/
+COPY --from=builder /tmp/Caddyfile /etc/caddy/
+COPY --from=builder /tmp/index.html /usr/share/caddy/
 COPY --from=builder /usr/bin/caddy /usr/bin/
+COPY Caddyfile /etc/
 
 RUN addgroup -g 82 -S www-data && \
     adduser -u 82 -SD -h /var/lib/caddy/ -g 'Caddy web server' -s /sbin/nologin -G www-data www-data && \
@@ -39,6 +40,8 @@ USER www-data
 RUN mkdir -p /var/lib/caddy/.local/share/caddy
 VOLUME /var/lib/caddy/.local/share/caddy
 
+HEALTHCHECK CMD curl -f http://127.0.0.1/health || exit 1
+
 EXPOSE 80 443 2019
-ENTRYPOINT ["/usr/bin/caddy", "run"]
-CMD ["--environ", "--config", "/etc/caddy/Caddyfile"]
+ENTRYPOINT ["caddy", "run"]
+CMD ["--environ", "--config", "/etc/Caddyfile"]
