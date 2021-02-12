@@ -50,5 +50,5 @@ RUN mkdir -p /var/lib/caddy/.local/share/caddy
 VOLUME /var/lib/caddy/.local/share/caddy
 
 EXPOSE 80 443 2019
-ENTRYPOINT ["entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 CMD ["--environ", "--config", "/etc/caddy/Caddyfile"]
