@@ -1,6 +1,6 @@
 import /etc/caddy/Caddyfile
 
-127.0.0.1:2016 {
+localhost:2016 {
   respond /* 503
   respond /health 200
 }
