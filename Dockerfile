@@ -40,7 +40,7 @@ USER www-data
 RUN mkdir -p /var/lib/caddy/.local/share/caddy
 VOLUME /var/lib/caddy/.local/share/caddy
 
-HEALTHCHECK CMD curl -f http://localhost/health || exit 1
+HEALTHCHECK CMD curl -f http://localhost:2016/health || exit 1
 
 EXPOSE 80 443 2019
 ENTRYPOINT ["caddy", "run"]
