@@ -1,8 +1,8 @@
 #
 # Builder
 #
-FROM alpine:3.13 as builder
-ARG version="2.4.1"
+FROM alpine:3.13 AS builder
+ARG version="2.4.2"
 
 RUN apk add --no-cache \
     ca-certificates \
