@@ -1,8 +1,8 @@
 #
 # Builder
 #
-FROM alpine:3.13 AS builder
-ARG version="2.4.2"
+FROM alpine:3.14 AS builder
+ARG version="2.4.3"
 
 RUN apk add --no-cache \
     ca-certificates \
@@ -19,7 +19,7 @@ RUN wget -nv -O /tmp/Caddyfile "https://raw.githubusercontent.com/caddyserver/di
 #
 # Final Stage
 #
-FROM alpine:3.13
+FROM alpine:3.14
 
 RUN apk add --no-cache \
     ca-certificates \
