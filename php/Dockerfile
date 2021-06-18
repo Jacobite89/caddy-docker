@@ -39,8 +39,7 @@ COPY --from=builder /tmp/index.html /usr/share/caddy/
 COPY --from=builder /usr/bin/caddy /usr/bin/
 COPY entrypoint.sh /
 
-RUN addgroup -g 82 -S www-data && \
-    adduser -u 82 -SD -h /var/lib/caddy/ -g 'Caddy web server' -s /sbin/nologin -G www-data www-data && \
+RUN adduser -u 82 -SD -h /var/lib/caddy/ -g 'Caddy web server' -s /sbin/nologin -G www-data www-data && \
     setcap cap_net_bind_service=+ep /usr/bin/caddy && \
     chown -R www-data /var/log/php7 && \
     chmod +x /entrypoint.sh
